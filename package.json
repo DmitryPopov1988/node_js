@@ -2,7 +2,7 @@
   "name": "node_js",
   "version": "1.0.0",
   "description": "",
-  "main": "src/client/meteor_nasa_client.js",
+  "main": "src/app.js",
   "type": "module",
   "keywords": [],
   "author": "",
