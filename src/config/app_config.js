@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+
 export const config = {
     nasaApiConfig: {
         key: process.env.NASA_API_KEY,
