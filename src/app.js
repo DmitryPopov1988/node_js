@@ -1,24 +1,27 @@
-import express from "express"
-import {config} from "./config/config.js";
-import {client} from "./client/nasa_client.js";
+const express = require('express');
+const config = require('./config/env_config');
+const meteorRouter = require('./router/meteor_router.js');
 
+const app = express();
 
-export const app = express();
+app.use(express.json());
 
-app.get('/meteors', (req, res) => {
-    let startDate = req.query.start_date;
-    let endDate = req.query.end_date;
+app.use('/meteors', meteorRouter);
 
-    if (!startDate) {
-        startDate = new Date().toISOString().split('T')[0];
-    }
-
-    if (!endDate) {
-        endDate = new Date().toISOString().split('T')[0];
-    }
-
-    client(req, res, startDate, endDate);
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({
+        status: statusCode,
+        message: err.message
+    });
 });
+
+app.use('*', (req, res) =>
+    res.status(404).json({
+        status: 404,
+        message: 'The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.'
+    }),
+);
 
 const port = config.appServerConfig.port;
 app.listen(port, () => {
