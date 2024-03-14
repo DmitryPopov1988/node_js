@@ -1,8 +1,6 @@
-import dotenv from "dotenv";
-dotenv.config();
+require('dotenv').config();
 
-
-export const config = {
+const env_config = {
     nasaApiConfig: {
         key: process.env.NASA_API_KEY,
         url: process.env.NASA_API_URL
@@ -11,3 +9,5 @@ export const config = {
         port: process.env.SERVER_PORT
     }
 };
+
+module.exports = env_config;
