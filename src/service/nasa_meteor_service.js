@@ -3,12 +3,9 @@ const config = require('../config/env_config');
 const {getDate} = require('../util/date_util.js');
 const {mapMeteors} = require('../mapper/nasa_meteor_mapper');
 
-const getNasaMeteorsData = async (startDate, endDate, countOnly) => {
+const getNasaMeteorsData = async (startDate, endDate, countOnly, wereDangerous) => {
     const requestStartDate = startDate ? startDate : getDate().monday;
     const requestEndDate = endDate ? endDate : getDate().friday;
-    console.log(`START DATE ${requestStartDate}`);
-    console.log(`END DATE ${requestEndDate}`);
-    console.log(`COUNT ${countOnly}`);
     return axios
         .get(config.nasaApiConfig.url, {
             params: {
@@ -21,7 +18,9 @@ const getNasaMeteorsData = async (startDate, endDate, countOnly) => {
                 if (countOnly) {
                     return {count: countMeteors(response.data)};
                 }
-
+                if (wereDangerous) {
+                    return {wereDangerous: hasPotentiallyHazardousAsteroid(response.data)};
+                }
                 return mapMeteors(response.data);
             }
         )
@@ -36,6 +35,17 @@ const countMeteors = (nasaMeteors) => {
         totalCount += nasaMeteors.near_earth_objects[date].length;
     }
     return totalCount;
+};
+
+const hasPotentiallyHazardousAsteroid = (nasaMeteors) => {
+    for (const date in nasaMeteors.near_earth_objects) {
+        for (const meteor of nasaMeteors.near_earth_objects[date]) {
+            if (meteor.is_potentially_hazardous_asteroid === true) {
+                return true;
+            }
+        }
+    }
+    return false;
 };
 
 module.exports = {getNasaMeteorsData};
