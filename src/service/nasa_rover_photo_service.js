@@ -12,7 +12,7 @@ const getLatestNasaRoverPhoto = async (apiKey) => {
         });
         return responseFromNasa.data.photos.pop().img_src;
     } catch (error) {
-        console.error('An error occrred while fetching last Curiosity photo:', error);
+        console.error('An error occurred while fetching last Curiosity photo:', error);
         throw new Error(error.message);
     }
 }
