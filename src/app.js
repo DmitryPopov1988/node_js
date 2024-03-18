@@ -1,12 +1,14 @@
 const express = require('express');
 const config = require('./config/env_config');
 const meteorRouter = require('./router/meteor_router.js');
+const roverPhotoRouter = require('./router/rover_photo_router.js');
 
 const app = express();
 
 app.use(express.json());
 
 app.use('/meteors', meteorRouter);
+app.use('/photos', roverPhotoRouter);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
