@@ -7,7 +7,7 @@ const getNasaMeteorsData = async (startDate, endDate, countOnly, wereDangerous) 
     const requestStartDate = startDate ? startDate : getDate().monday;
     const requestEndDate = endDate ? endDate : getDate().friday;
     try {
-        const responseFromNasa = await axios.get(config.nasaApiConfig.url, {
+        const responseFromNasa = await axios.get(config.nasaApiConfig.meteorDataUrl, {
             params: {
                 start_date: requestStartDate,
                 end_date: requestEndDate,
@@ -30,6 +30,7 @@ const getNasaMeteorsData = async (startDate, endDate, countOnly, wereDangerous) 
         }
         return response;
     } catch (err) {
+        console.error('An error occurred while fetching data about meteors:', error);
         throw new Error(err.message);
     }
 }
