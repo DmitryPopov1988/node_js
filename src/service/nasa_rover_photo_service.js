@@ -1,13 +1,13 @@
 const axios = require('axios');
 const config = require('../config/env_config');
 
-const getLatestNasaRoverPhoto = async () => {
+const getLatestNasaRoverPhoto = async (apiKey) => {
     try {
-        const latestCuriosityPhotoDate = await getLatestCuriosityPhotoDate();
+        const latestCuriosityPhotoDate = await getLatestCuriosityPhotoDate(apiKey);
         const responseFromNasa = await axios.get(config.nasaApiConfig.marsPhotoUrl, {
             params: {
                 earth_date: latestCuriosityPhotoDate,
-                api_key: config.nasaApiConfig.key,
+                api_key: apiKey,
             },
         });
         return responseFromNasa.data.photos.pop().img_src;
@@ -17,8 +17,8 @@ const getLatestNasaRoverPhoto = async () => {
     }
 }
 
-const getLatestCuriosityPhotoDate = () => {
-    return axios.get(config.nasaApiConfig.curiosityManifestsUrl, {params: {api_key: config.nasaApiConfig.key}})
+const getLatestCuriosityPhotoDate = (apiKey) => {
+    return axios.get(config.nasaApiConfig.curiosityManifestsUrl, {params: {api_key: apiKey}})
         .then(resp => resp.data.photo_manifest.max_date)
         .catch((err) => new Error(err.message));
 }
