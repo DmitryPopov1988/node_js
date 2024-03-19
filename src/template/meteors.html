@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Meteors Data</title>
+    <style>
+        /* Add your custom CSS styles here */
+    </style>
+</head>
+<body>
+<h1>NASA Meteors Data</h1>
+
+<div>
+    <p>Count: {{ count }}</p>
+    <p>Were Dangerous: {{ wereDangerous }}</p>
+</div>
+
+{% for meteorData in meteors %}
+<div>
+    <h2>Date: {{ meteorData.date }}</h2>
+    <ul>
+        {% for meteor in meteorData.meteors %}
+        <li>
+            <p>ID: {{ meteor.id }}</p>
+            <p>Name: {{ meteor.name }}</p>
+            <p>Diameter: {{ meteor.diameter.min }} - {{ meteor.diameter.max }}</p>
+            <p>Potentially Hazardous: {{ meteor.is_potentially_hazardous }}</p>
+            <p>Close Approach Date: {{ meteor.close_approach_date_full }}</p>
+            <p>Relative Velocity (kps): {{ meteor.relative_velocity_kps }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+</body>
+</html>

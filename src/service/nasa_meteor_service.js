@@ -25,9 +25,8 @@ const getNasaMeteorsData = async (startDate, endDate, countOnly, wereDangerous) 
             response = {count: countMeteors(nasaMeteors)};
         } else if (wereDangerous) {
             response = {wereDangerous: hasPotentiallyHazardousAsteroid(nasaMeteors)};
-        } else {
-            response = mapMeteors(nasaMeteors);
         }
+        response = {...response, meteors: mapMeteors(nasaMeteors)};
         return response;
     } catch (err) {
         console.error('An error occurred while fetching data about meteors:', error);
