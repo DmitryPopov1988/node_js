@@ -1,6 +1,7 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-const env_config = {
+export const env_config = {
     nasaApiConfig: {
         key: process.env.NASA_API_KEY,
         meteorDataUrl: process.env.NASA_METEOR_DATA_API_URL,
@@ -11,5 +12,3 @@ const env_config = {
         port: process.env.SERVER_PORT
     }
 };
-
-module.exports = env_config;

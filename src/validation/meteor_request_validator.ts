@@ -1,10 +1,10 @@
-const Joi = require('joi').extend(require('@joi/date'));
+import CoreJoi from 'joi';
+import * as JoiDate from '@joi/date';
+const Joi = CoreJoi.extend(JoiDate.default(CoreJoi)) as typeof CoreJoi;
 
-const meteorRequestSchema = Joi.object({
+export const meteorRequestSchema = Joi.object({
     start_date: Joi.date().less('now').format('YYYY-MM-DD'),
     end_date: Joi.date().less('now').format('YYYY-MM-DD'),
     count: Joi.boolean().sensitive(),
     were_dangerous_meteors: Joi.boolean().sensitive(),
 });
-
-module.exports = meteorRequestSchema;

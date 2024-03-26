@@ -1,4 +1,6 @@
-const mapMeteors = (nasaMeteors) => {
+import {NasaMeteor, NasaMeteors} from '../type/nasa_meteor_data'
+
+export const mapMeteors = (nasaMeteors: NasaMeteors) => {
     const ans = [];
     for (const date in nasaMeteors.near_earth_objects) {
         const meteors = nasaMeteors.near_earth_objects[date];
@@ -8,7 +10,7 @@ const mapMeteors = (nasaMeteors) => {
     return ans;
 };
 
-function mapMeteor(nasaMeteor) {
+function mapMeteor(nasaMeteor: NasaMeteor) {
     return {
         id: nasaMeteor.id,
         name: nasaMeteor.name,
@@ -21,5 +23,3 @@ function mapMeteor(nasaMeteor) {
         relative_velocity_kps: nasaMeteor.close_approach_data[0].relative_velocity.kilometers_per_second
     };
 }
-
-module.exports = {mapMeteors};
