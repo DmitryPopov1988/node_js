@@ -1,7 +1,8 @@
-const {getLatestNasaRoverPhoto} = require('../service/nasa_rover_photo_service.js');
-const nunjucks = require('nunjucks');
+import nunjucks from 'nunjucks'
+import {NextFunction, Request, Response} from 'express';
+import {getLatestNasaRoverPhoto} from '../service/nasa_rover_photo_service';
 
-const getRoverPhotos = async (req, res, next) => {
+export const getRoverPhotos = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const latestNasaRoverPhoto = await getLatestNasaRoverPhoto(req.body.api_key);
         const html = nunjucks.render('rover_photo.html', {roverPhotoUrl: latestNasaRoverPhoto});
@@ -11,5 +12,3 @@ const getRoverPhotos = async (req, res, next) => {
         next(error);
     }
 }
-
-module.exports = {getRoverPhotos};
