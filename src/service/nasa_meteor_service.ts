@@ -1,17 +1,17 @@
-const axios = require('axios');
-const config = require('../config/env_config');
-const {getDate} = require('../util/date_util.js');
-const {mapMeteors} = require('../mapper/nasa_meteor_mapper');
+import axios from 'axios';
+import {env_config} from '../config/env_config'
+import {getDate} from '../util/date_util.js';
+import {mapMeteors} from '../mapper/nasa_meteor_mapper';
+import {NasaMeteors} from '../type/nasa_meteor_data'
 
-const getNasaMeteorsData = async (startDate, endDate, countOnly, wereDangerous) => {
+export const getNasaMeteorsData = async (startDate: string, endDate: string, countOnly: boolean, wereDangerous: boolean) => {
     const requestStartDate = startDate ? startDate : getDate().monday;
     const requestEndDate = endDate ? endDate : getDate().friday;
-    try {
-        const responseFromNasa = await axios.get(config.nasaApiConfig.meteorDataUrl, {
+        const responseFromNasa = await axios.get(env_config.nasaApiConfig.meteorDataUrl!, {
             params: {
                 start_date: requestStartDate,
                 end_date: requestEndDate,
-                api_key: config.nasaApiConfig.key,
+                api_key: env_config.nasaApiConfig.key,
             },
         });
         const nasaMeteors = responseFromNasa.data;
@@ -28,13 +28,9 @@ const getNasaMeteorsData = async (startDate, endDate, countOnly, wereDangerous) 
         }
         response = {...response, meteors: mapMeteors(nasaMeteors)};
         return response;
-    } catch (err) {
-        console.error('An error occurred while fetching data about meteors:', error);
-        throw new Error(err.message);
-    }
 }
 
-const countMeteors = (nasaMeteors) => {
+const countMeteors = (nasaMeteors: NasaMeteors): number => {
     let totalCount = 0;
     for (const date in nasaMeteors.near_earth_objects) {
         totalCount += nasaMeteors.near_earth_objects[date].length;
@@ -42,15 +38,13 @@ const countMeteors = (nasaMeteors) => {
     return totalCount;
 };
 
-const hasPotentiallyHazardousAsteroid = (nasaMeteors) => {
+const hasPotentiallyHazardousAsteroid = (nasaMeteors: NasaMeteors): boolean => {
     for (const date in nasaMeteors.near_earth_objects) {
         for (const meteor of nasaMeteors.near_earth_objects[date]) {
-            if (meteor.is_potentially_hazardous_asteroid === true) {
+            if (meteor.is_potentially_hazardous_asteroid) {
                 return true;
             }
         }
     }
     return false;
 };
-
-module.exports = {getNasaMeteorsData};

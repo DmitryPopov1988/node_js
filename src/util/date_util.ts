@@ -1,8 +1,8 @@
-const {startOfWeek, addDays, format} = require('date-fns');
+import {addDays, format, startOfWeek} from 'date-fns';
 
 const DATE_FORMAT = 'yyyy-MM-dd';
 
-const getDate = () => {
+export const getDate = () => {
     const currentDate = new Date();
     const startOfCurrentWeek = startOfWeek(currentDate, {weekStartsOn: 1});
 
@@ -14,11 +14,3 @@ const getDate = () => {
 
     return {monday: formattedMondayDate, friday: formattedFridayDate};
 }
-
-const getCurrentDate = () => {
-    const currentDate = new Date();
-    return format(currentDate, DATE_FORMAT)
-}
-
-module.exports = {getDate, getCurrentDate};
-

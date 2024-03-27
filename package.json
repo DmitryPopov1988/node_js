@@ -2,9 +2,13 @@
   "name": "node_js",
   "version": "1.0.0",
   "description": "",
-  "main": "src/app.js",
+  "main": "./src/app.ts",
   "scripts": {
-    "dev": "nodemon src/app.js",
+    "prebuild": "node src/copy_html_templates.mjs",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/app.js",
+    "copy-files": "copyfiles -u 1 src/**/*.html dist/",
+    "dev": "nodemon src/app.ts",
     "precommit": "lint-staged"
   },
   "keywords": [],
@@ -21,12 +25,16 @@
     "nunjucks": "^3.2.4"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.30",
+    "@types/nunjucks": "^3.2.6",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-security": "^2.1.1"
+    "eslint-plugin-security": "^2.1.1",
+    "typescript": "^5.4.3"
   }
 }
