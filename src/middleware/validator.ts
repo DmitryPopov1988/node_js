@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors'
 import {NextFunction, Request, Response} from 'express';
 import {Schema, ValidationError} from 'joi';
+import * as Sentry from '@sentry/node';
 
 const supportedMethods = ['get', 'post', 'put', 'patch', 'delete'];
 
@@ -22,6 +23,7 @@ export const validator = (schema: Schema, sourceName: keyof Request) => {
             next();
         } catch (error) {
             console.error(`${String(error)}`);
+            Sentry.captureException(error);
             if (error instanceof ValidationError) {
                 return next(createHttpError(422, {message: String(error)}));
             }
