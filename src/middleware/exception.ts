@@ -22,4 +22,5 @@ export const pageNotFoundHandler = (req: Request, res: Response) => {
     const html = nunjucks.render('not_found.html', {status: 404, message: errorMessage});
     res.status(404);
     res.send(html);
+    Sentry.captureException(new Error(errorMessage));
 };
