@@ -16,6 +16,8 @@ nunjucks.configure(path.resolve(__dirname, './template'), {
     express: app,
 });
 
+app.use(express.static(path.join(__dirname, '.', 'public')));
+
 app.use(express.json());
 
 app.use('/meteors', validator(meteorRequestSchema, 'query'), meteorRouter);

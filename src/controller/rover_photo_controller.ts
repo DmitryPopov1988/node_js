@@ -7,7 +7,6 @@ export const getRoverPhotos = async (req: Request, res: Response, next: NextFunc
         const latestNasaRoverPhoto = await getLatestNasaRoverPhoto(req.body.api_key);
         const html = nunjucks.render('rover_photo.html', {roverPhotoUrl: latestNasaRoverPhoto});
         res.send(html);
-        res.redirect(latestNasaRoverPhoto);
     } catch (error) {
         next(error);
     }
