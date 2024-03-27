@@ -16,8 +16,14 @@ nunjucks.configure(path.resolve(__dirname, './template'), {
     express: app,
 });
 
-app.use(express.json());
+app.use(express.static(path.join(__dirname, '.', 'public')));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.get('/user', (req, res) => {
+    res.sendFile(path.join(__dirname, 'template', 'user_form.html'));
+});
 app.use('/meteors', validator(meteorRequestSchema, 'query'), meteorRouter);
 app.use('/photos', validator(userRequestSchema, 'body'), roverPhotoRouter);
 

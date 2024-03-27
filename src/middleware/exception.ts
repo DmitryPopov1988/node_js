@@ -14,7 +14,7 @@ export const exceptionHandler = (err: Error, req: Request, res: Response, next: 
     res.send(html);
 };
 
-export const pageNotFoundHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+export const pageNotFoundHandler = (req: Request, res: Response) => {
     const errorMessage = 'The requested URL was not found ' + req.originalUrl;
     console.error(errorMessage);
     const html = nunjucks.render('not_found.html', {status: 404, message: errorMessage});
