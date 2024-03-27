@@ -8,8 +8,10 @@ import {validator} from './middleware/validator'
 import {meteorRequestSchema} from './validation/meteor_request_validator';
 import {userRequestSchema} from './validation/user_request_validator';
 import {exceptionHandler, pageNotFoundHandler} from './middleware/exception'
+import {initSentry} from "./config/sentry_config";
 
 const app = express();
+const Sentry = initSentry(app);
 
 nunjucks.configure(path.resolve(__dirname, './template'), {
     autoescape: true,
@@ -21,11 +23,16 @@ app.use(express.static(path.join(__dirname, '.', 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
+
 app.get('/user', (req, res) => {
     res.sendFile(path.join(__dirname, 'template', 'user_form.html'));
 });
 app.use('/meteors', validator(meteorRequestSchema, 'query'), meteorRouter);
 app.use('/photos', validator(userRequestSchema, 'body'), roverPhotoRouter);
+
+app.use(Sentry.Handlers.errorHandler());
 
 app.use(exceptionHandler);
 app.use('*', pageNotFoundHandler);

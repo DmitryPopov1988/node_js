@@ -1,4 +1,5 @@
 import nunjucks from 'nunjucks'
+import * as Sentry from '@sentry/node';
 import {NextFunction, Request, Response} from 'express';
 
 interface Error {
@@ -12,6 +13,7 @@ export const exceptionHandler = (err: Error, req: Request, res: Response, next: 
     const html = nunjucks.render('error.html', {status: statusCode, message: err.message});
     res.status(statusCode);
     res.send(html);
+    Sentry.captureException(err);
 };
 
 export const pageNotFoundHandler = (req: Request, res: Response) => {
