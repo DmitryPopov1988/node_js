@@ -5,17 +5,20 @@
   "main": "./src/app.ts",
   "scripts": {
     "prebuild": "node src/copy_html_templates.mjs",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && npm run sentry:sourcemaps",
     "start": "node dist/app.js",
-    "copy-files": "copyfiles -u 1 src/**/*.html dist/",
     "dev": "nodemon src/app.ts",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org dmitry-popov --project node-express ./dist && sentry-cli sourcemaps upload --org dmitry-popov --project node-express ./dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@joi/date": "^2.1.0",
+    "@sentry/cli": "^2.30.5",
+    "@sentry/node": "^7.108.0",
+    "@sentry/profiling-node": "^7.108.0",
     "axios": "^1.6.7",
     "date-fns": "^3.4.0",
     "dotenv": "^16.4.5",

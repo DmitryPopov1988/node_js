@@ -10,5 +10,8 @@ export const env_config = {
     },
     appServerConfig: {
         port: process.env.SERVER_PORT
-    }
+    },
+    sentry: {
+        dsn: process.env.SENTRY_DSN
+    },
 };
